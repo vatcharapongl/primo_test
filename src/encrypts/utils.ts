@@ -7,7 +7,7 @@ export function generateAESKey(): string {
 export function encryptWithAES(payload: string, aesKeyBase64: string): string {
   const iv = randomBytes(16);
   const key = Buffer.from(aesKeyBase64, 'base64');
-  const cipher = createCipheriv('aes-256-cbc', key, iv);
+  const cipher = createCipheriv('aes-256-ctr', key, iv);
 
   const encrypted = Buffer.concat([
     cipher.update(payload, 'utf8'),
@@ -25,7 +25,7 @@ export function decryptWithAES(
   const encrypted = Buffer.from(encryptedBase64, 'base64');
   const key = Buffer.from(aesKeyBase64, 'base64');
 
-  const decipher = createDecipheriv('aes-256-cbc', key, iv);
+  const decipher = createDecipheriv('aes-256-ctr', key, iv);
   const decrypted = Buffer.concat([
     decipher.update(encrypted),
     decipher.final(),
